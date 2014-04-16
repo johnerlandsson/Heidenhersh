@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <limits>
 #include <bitset>
+#include <cmath>
 
 //TODO debug include
 #include <iostream>
@@ -53,7 +54,7 @@ HershChar::HershChar( const char c, const std::initializer_list<Point> p ) : p_{
 }
 
 
-char HershChar::c()
+const char HershChar::c() const
 {
 	return c_;
 }
@@ -76,17 +77,7 @@ const std::vector<std::string> HershChar::toHeidenhain(	const double scale, cons
 	return toHeidenhain( scale, mirror, feed, rapid );
 }
 
-const std::vector<std::string> HershChar::toHeidenhain( const double scale, const bool mirror, const int feed,
-														const int rapid, const int n_cuts, const double workp_z_pos,
-														double& x_offset )
-{
-	x_offset += (width_ / 2);
-	multiple_cuts( n_cuts, workp_z_pos );
-
-	return toHeidenhain( scale, mirror, feed, rapid );
-}
-
-const std::vector<std::string> HershChar::toHeidenhain( const double scale, const bool mirror, const int feed, const int rapid )
+const std::vector<std::string> HershChar::toHeidenhain( const double scale, const bool mirror, const int feed, const int rapid ) const
 {
 	std::vector<std::string> ret;
 
@@ -134,40 +125,189 @@ const std::vector<std::string> HershChar::toHeidenhain( const double scale, cons
 	return ret;
 }
 
-void HershChar::multiple_cuts( const int n_cuts, const double workp_z_pos )
+const HershChar HershChar::multipleCuts( HershChar const &from, const int n_cuts, const double workp_z_pos )
 {
 	if( n_cuts == 1 )
-		return;
+		return HershChar( from );
 	else if( n_cuts <= 1 )
-		throw std::invalid_argument( "HershChar::multiple_cuts: less than one cut." );
+		throw std::invalid_argument( "HershChar::multipleCuts: less than one cut." );
 
-	double inc = workp_z_pos - min_z_pos / (double)n_cuts;
+	double inc = workp_z_pos - from.min_z_pos / (double)n_cuts;
 	if( inc < 0.0f )
-		throw std::invalid_argument( "HershChar::multiple_cuts: increment is less than zero." );
+		throw std::invalid_argument( "HershChar::multipleCuts: increment is less than zero." );
 
-	std::vector<Point> tmp_p = p_;
-	p_.clear();
-	for( int i = 0; i < n_cuts - 1; i++ )
+	HershChar ret{ from.c(), {} };
+	Point prev, current;
+	for( int i = n_cuts; i > 0; i-- )
 	{
-		for( const auto p : tmp_p )
+		for( const auto p : from.p_ )
 		{
-			Point current = p;
+			current = p;
 			try
 			{
 				double z = current.z();
-				if( z == min_z_pos )
-					current.setZ( z - ((z / (double)n_cuts) * (n_cuts - i)) );
+				if( z == from.min_z_pos )
+					current.setZ( z + (inc * (i - 1)) );
 			}
 			catch( const std::out_of_range & ) { }
 
-			p_.push_back( current );
+			//Skip duplicate entries
+			if( prev != current )
+				ret.p_.push_back( current );
+			prev = current;
 		}
 	}
 
+	return ret;
 }
 
-void HershChar::split_yz_groove( const Point yz_center, const double workp_z_pos )
+const HershChar HershChar::yzGroove( HershChar const &from, const double z_offs, const double workp_z_pos,
+									 const double groove_radius, const double work_radius, const int n_cuts,
+									 const double z_res )
 {
+	HershChar split{ splitYSegments( from, z_res ) };
+	HershChar ret{ split.c_, {} };
+	ret.max_z_pos = split.max_z_pos;
+	ret.min_z_pos = split.min_z_pos;
+	ret.width_ = split.width_;
+
+	double incR = (work_radius - groove_radius) / n_cuts;
+	if( incR <= 0.0f )
+		throw std::invalid_argument( "HershChar::yzGroove: Negative radius increment.\nCheck parameters: groove_radius, work_radius and n_cuts." );
+
+	double currY = split.firstY();
+	for( int i = 1; i <= n_cuts; i++ )
+	{
+		Point prevP;
+		for( auto p : split.p_ )
+		{
+			if( (prevP) && p == prevP )
+				continue;
+
+			if( p.hasY() )
+				currY = p.y();
+
+			if( (p.hasZ()) && p.z() == split.min_z_pos )
+			{
+				double currR = groove_radius + (incR * i);
+				Point nP = p;
+				nP.setZ( z_offs - (currR - ( 1 - (cos( asin( currY / currR ) )))) );
+				ret.p_.push_back( nP );
+			}
+			else
+			{
+				ret.p_.push_back( p );
+			}
+		}
+	}
+
+	return ret;
+}
+
+void HershChar::addPoint( const Point p )
+{
+	p_.push_back( p );
+}
+
+const HershChar HershChar::splitYSegments( HershChar const &from, const double max_y_len )
+{
+	if( max_y_len < 0.1f )
+		throw std::invalid_argument( "HershChar::splitYSegments: Segment too short." );
+
+	HershChar ret{ from.c(), {} };
+	ret.max_z_pos = from.max_z_pos;
+	ret.min_z_pos = from.min_z_pos;
+	ret.width_ = from.width_;
+
+	try
+	{
+		double prevY = from.firstY();
+		Point prevP;
+		for( const auto p : from.p_ )
+		{
+			try
+			{
+				if( prevP )
+				{
+					//Don't split segments with no Z coordinate or where Z is in top position
+					try
+					{
+						if( p.z() == from.max_z_pos )
+							throw std::out_of_range( "dummy" );
+					}
+					catch( const std::out_of_range &e )
+					{
+						ret.p_.push_back( p );
+						prevP = p;
+						continue;
+					}
+
+					double y_dist = prevY - p.y();
+					if( y_dist < 0.0f )
+						y_dist *= -1.0f;
+
+					if( y_dist > 0.0f )
+					{
+						int n_seg = (int)ceil( y_dist / max_y_len );
+						double seg_len = segmentLength( prevP, p ) / n_seg;
+						if( seg_len == 0.0f )
+							throw std::overflow_error( "HershChar::splitYSegments: About to divide by zero." );
+
+						Point::xy_points_t xy = Point::normalizeXY( prevP, p );
+						double incX = (xy.bx - xy.ax) / n_seg;
+						double incY = (xy.by - xy.ay) / n_seg;
+
+						double z = p.hasZ() ? p.z() : ret.max_z_pos;
+
+						for( int i = 1; i <= n_seg; i++ )
+							ret.p_.push_back( Point( xy.ax + (incX * i), xy.ay + (incY * i), z ) );
+					}
+					else
+					{
+						ret.p_.push_back( p );
+					}
+
+					prevY = p.y();
+				}
+				else
+				{
+					ret.p_.push_back( p );
+				}
+
+				prevP = p;
+			}
+			catch( const std::out_of_range & ) { ret.p_.push_back( p ); }
+		}
+	}
+	catch( const NoY &e ) { return from; }
+
+	return ret;
+}
+
+const double HershChar::firstY() const
+{
+	double ret;
+	bool hasValue = false;
+
+	for( auto p : p_ )
+	{
+		try { ret = p.y(); hasValue = true; }
+		catch( const std::out_of_range & ) { }
+
+		if( hasValue )
+			return ret;
+	}
+
+	throw NoY{};
+
+	return ret;
+}
+
+const double HershChar::segmentLength( const Point a, const Point b )
+{
+	Point::xy_points_t xy = Point::normalizeXY( a, b );
+
+	return sqrt( (xy.ax - xy.bx) * (xy.ax - xy.bx) + (xy.ay - xy.by) * (xy.ay - xy.by) );
 }
 
 } /* namespace heidenhersh */

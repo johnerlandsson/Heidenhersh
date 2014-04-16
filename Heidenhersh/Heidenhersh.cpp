@@ -21,17 +21,19 @@ std::vector<HershChar> chars;
 int main()
 try
 {
-	string line{ "A" };
+	string line{ "ABCDEFGHIJKLMNOPQRSTUVXYZ" };
 
 	CharacterMap m{ 0.2, -0.3 };
 
-	double xoffs{ 0.0f };
 	int lno{ 0 };
 	cout << lno << " BEGIN PGM 1 MM" << endl;
-	for( auto c : line )
+	for( auto i = line.begin(); i != line.end(); i++ )
 	{
-		for( auto l : m.character( c ).toHeidenhain( 1.0f, false, 30, 6000 ) )
+		HershChar co = HershChar::yzGroove( m.character( *i ), 5, 0.0f, 10.0f, 10.3f, 2, 0.5f );
+		for( const auto l : co.toHeidenhain( 3.2f, false, 30, 6000 ) )
 			cout << ++lno << ' ' << l << endl;
+		string mfun = i == (line.end() - 1) ? "M2" : "M";
+		cout << ++lno << ' ' << "STOP " << mfun << endl;
 	}
 	cout << ++lno << " END PGM 1" << endl;
 

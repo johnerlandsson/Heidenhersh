@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo
+echo
+echo $3 | sed -e 's/ZUP/ zs /g' -e 's/ZDOWN/ zw /g' -e 's/\\n/\}, \{/g' -e 's/[YZ]/, /g' -e 's/X/ /g' -e 's/^/\{/' -e 's/$/\}/' -e 's/^/std::initializer_lis<Point> pl{ /' | sed -E 's/([0-9]) ([zs|zw])/\1, \2/g'
+echo
