@@ -195,7 +195,7 @@ const HershChar HershChar::yzGroove( HershChar const &from, const double z_offs,
 			{
 				double currR = groove_radius + (incR * i);
 				Point nP = p;
-				nP.setZ( z_offs - (currR - ( 1 - (cos( asin( currY / currR ) )))) );
+				nP.setZ( ((currR * cos( atan( currY / currR ) )) - z_offs ) * -1.0f );
 				if( prevP != nP )
 					ret.p_.push_back( nP );
 				prevP = nP;

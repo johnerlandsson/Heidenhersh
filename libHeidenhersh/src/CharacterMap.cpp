@@ -37,7 +37,13 @@ CharacterMap::CharacterMap( const double z_safe, const double z_work ) : zs{ z_s
 	data.push_back( make_Y() );
 	data.push_back( make_Z() );
 
+	data.push_back( make_a() );
+	data.push_back( make_b() );
+	data.push_back( make_e() );
+	data.push_back( make_k() );
+	data.push_back( make_l() );
 	data.push_back( make_m() );
+	data.push_back( make_o() );
 	data.push_back( make_x() );
 
 	data.push_back( make_0() );
@@ -226,10 +232,46 @@ inline const HershChar CharacterMap::make_Z()
 	return HershChar{ 'Z', pl };
 }
 
+inline const HershChar CharacterMap::make_a()
+{
+	std::initializer_list<Point> pl{ { zs }, { 0.581857, 0.484859, zs }, { zw }, { 0.581857, -0.872714, zw }, { zs }, { 0.581857, 0.193944, zs }, { zw }, { 0.387905, 0.387888, zw }, { 0.193952, 0.484859, zw }, { -0.096976, 0.484859, zw }, { -0.290928, 0.387888, zw }, { -0.484881, 0.193944, zw }, { -0.581857, -0.096970, zw }, { -0.581857, -0.290913, zw }, { -0.484881, -0.581828, zw }, { -0.290928, -0.775743, zw }, { -0.096976, -0.872714, zw }, { 0.193952, -0.872714, zw }, { 0.387905, -0.775743, zw }, { 0.581857, -0.581828, zw }, { zs } };
+	return HershChar{ 'a', pl };
+}
+
+inline const HershChar CharacterMap::make_b()
+{
+	std::initializer_list<Point> pl{ { zs }, { -0.581857, 1.163660, zs }, { zw }, { -0.581857, -0.872686, zw }, { zs }, { -0.581857, 0.193973, zs }, { zw }, { -0.387905, 0.387916, zw }, { -0.193952, 0.484887, zw }, { 0.096976, 0.484887, zw }, { 0.290928, 0.387916, zw }, { 0.484881, 0.193973, zw }, { 0.581857, -0.096942, zw }, { 0.581857, -0.290885, zw }, { 0.484881, -0.581800, zw }, { 0.290928, -0.775715, zw }, { 0.096976, -0.872686, zw }, { -0.193952, -0.872686, zw }, { -0.387905, -0.775715, zw }, { -0.581857, -0.581800, zw }, { zs } };
+	return HershChar{ 'b', pl };
+}
+
+inline const HershChar CharacterMap::make_e()
+{
+	std::initializer_list<Point> pl{ { zs }, { -0.581858, -0.096970, zs }, { zw }, { 0.581778, -0.096970, zw }, { 0.581778, 0.096973, zw }, { 0.484808, 0.290916, zw }, { 0.387838, 0.387888, zw }, { 0.193899, 0.484859, zw }, { -0.097010, 0.484859, zw }, { -0.290949, 0.387888, zw }, { -0.484889, 0.193944, zw }, { -0.581858, -0.096970, zw }, { -0.581858, -0.290913, zw }, { -0.484889, -0.581828, zw }, { -0.290949, -0.775743, zw }, { -0.097010, -0.872714, zw }, { 0.193899, -0.872714, zw }, { 0.387838, -0.775743, zw }, { 0.581778, -0.581828, zw }, { zs } };
+	return HershChar{ 'e', pl };
+}
+
+inline const HershChar CharacterMap::make_k()
+{
+	std::initializer_list<Point> pl{ { zs }, { -0.533317, 1.163632, zs }, { zw }, { -0.533317, -0.872714, zw }, { zs }, { 0.436350, 0.484859, zs }, { zw }, { -0.533317, -0.484856, zw }, { zs }, { -0.145450, -0.096970, zs }, { zw }, { 0.533317, -0.872714, zw }, { zs } };
+	return HershChar{ 'k', pl };
+}
+
+inline const HershChar CharacterMap::make_l()
+{
+	std::initializer_list<Point> pl{ {zs}, { 0.0, 0.5, zs }, { zw }, { 0.0f, -0.5, zw }, { zs } };
+	return HershChar{ 'l', pl };
+}
+
 inline const HershChar CharacterMap::make_m()
 {
 	std::initializer_list<Point> pl{ { zs }, { -0.477273, 0.159090, zs }, { zw }, { -0.477273, -0.477265, zw }, { zs }, { -0.477273, -0.022718, zs }, { zw }, { -0.340909, 0.113624, zw }, { -0.250000, 0.159090, zw }, { -0.113636, 0.159090, zw }, { -0.022727, 0.113624, zw }, { 0.022727, -0.022718, zw }, { 0.022727, -0.477265, zw }, { zs }, { 0.022727, -0.022718, zs }, { zw }, { 0.159091 , 0.113624, zw }, { 0.250000, 0.159090, zw }, { 0.386364, 0.159090, zw }, { 0.477273, 0.113624, zw }, { 0.522727, -0.022718, zw }, { 0.522727, -0.477265, zw }, { zs } };
 	return HershChar{ 'm', pl };
+}
+
+inline const HershChar CharacterMap::make_o()
+{
+	std::initializer_list<Point> pl{ { zs }, { -0.145411, 0.484859, zs }, { zw }, { -0.339351, 0.387888, zw }, { -0.533290, 0.193944, zw }, { -0.630260, -0.096970, zw }, { -0.630260, -0.290913, zw }, { -0.533290, -0.581828, zw }, { -0.339351, -0.775743, zw }, { -0.145411, -0.872714, zw }, { 0.145498, -0.872714, zw }, { 0.339437, -0.775743, zw }, { 0.533376, -0.581828, zw }, { 0.630346, -0.290913, zw }, { 0.630346, -0.096970, zw }, { 0.533376, 0.193944, zw }, { 0.339437, 0.387888, zw }, { 0.145498, 0.484859, zw }, { -0.145411, 0.484859, zw }, { zs } };
+	return HershChar{ 'o', pl };
 }
 
 inline const HershChar CharacterMap::make_x()
@@ -319,7 +361,7 @@ inline const HershChar CharacterMap::make_slash()
 inline const HershChar CharacterMap::make_space()
 {
 	HershChar ret{ ' ', {} };
-	ret.width_ = 0.5f;
+	ret.width_ = 0.8f;
 	ret.max_z_pos = zs;
 	ret.min_z_pos = zw;
 

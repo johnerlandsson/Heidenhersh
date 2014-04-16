@@ -55,7 +55,7 @@ vector<double> wheel( const std::string &line, const CharacterMap &map, const do
 		prevC = co;
 		ret.push_back( a );
 	}
-	cout << ++lno << " END PGM 1" << endl;
+	cout << ++lno << " END PGM 1 MM" << endl;
 
 	return ret;
 }
@@ -87,7 +87,7 @@ vector<double> grooved_wheel( const std::string &line, const CharacterMap &map, 
 		prevC = co;
 		ret.push_back( a );
 	}
-	cout << ++lno << " END PGM 1" << endl;
+	cout << ++lno << " END PGM 1 MM" << endl;
 
 	return ret;
 }
@@ -96,16 +96,19 @@ vector<double> grooved_wheel( const std::string &line, const CharacterMap &map, 
 int main()
 try
 {
-	string line{ "I" };
+	string line{ "amokabel H00S-D 50 - " };
+//	string line{ "IEC 61138/60165" };
+//	string line{ "EXQ 4G1" };
 	CharacterMap m{ 0.2, -0.3 };
 
-//	vector<double> angles = wheel( line, m, 60.0f, 3.2f, true, 30, 1000, 0.5f, 2, 0.0f );
+//	vector<double> angles = wheel( line, m, 60.0f, 3.2f, true, 30, 1000, 1.0f, 2, 0.0f );
 	cout << ";Program. String: " << line << endl;
-	vector<double> angles = grooved_wheel( line, m, 60, 3.2, true, 30, 6000, 0.5f, 2, 0.0f, 5, 0.25f, 6.35f, 6.65f );
+	vector<double> angles = grooved_wheel( line, m, 60, 3.2, true, 30, 6000, 0.5f, 2, 0.0f, 4.93f, 0.25f, 6.35, 6.65 );
 
 	cout << endl << ";Angles." << endl;
 	for( auto a : angles )
-		cout << a << endl;
+		cout << a << ';';
+	cout << endl;
 
 	return 0;
 }
