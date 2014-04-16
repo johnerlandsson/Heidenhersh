@@ -318,8 +318,12 @@ inline const HershChar CharacterMap::make_slash()
 
 inline const HershChar CharacterMap::make_space()
 {
-	std::initializer_list<Point> pl{ };
-	return HershChar{ ' ', pl };
+	HershChar ret{ ' ', {} };
+	ret.width_ = 0.5f;
+	ret.max_z_pos = zs;
+	ret.min_z_pos = zw;
+
+	return ret;
 }
 
 } /* namespace heidenhersh */

@@ -18,6 +18,10 @@
 namespace heidenhersh
 {
 
+HershChar::HershChar() : c_{ '\0' }, max_z_pos{ 0.0f }, min_z_pos{ 0.0f }, width_{ 0.0f }
+{
+}
+
 HershChar::HershChar( const char c, const std::initializer_list<Point> p ) : p_{ p }, c_{ c }
 {
 	max_z_pos = std::numeric_limits<double>::min();
@@ -69,15 +73,8 @@ const double HershChar::width() const
 	return width_;
 }
 
-const std::vector<std::string> HershChar::toHeidenhain(	const double scale, const bool mirror, const int feed,
-														const int rapid, double& x_offset )
-{
-	x_offset += (width_ / 2);
-
-	return toHeidenhain( scale, mirror, feed, rapid );
-}
-
-const std::vector<std::string> HershChar::toHeidenhain( const double scale, const bool mirror, const int feed, const int rapid ) const
+const std::vector<std::string> HershChar::toHeidenhain( const double scale, const bool mirror, const int feed,
+														const int rapid ) const
 {
 	if( p_.size() == 0 )
 		return std::vector<std::string>();
@@ -91,25 +88,23 @@ const std::vector<std::string> HershChar::toHeidenhain( const double scale, cons
 
 		int f = feed;
 
-		try
+		if( l.hasX() )
 		{
 			double x{ l.x() };
 			if( mirror )
 				x *= -1.0f;
 			line << 'X' << (x *= scale) << ' ';
 		}
-		catch( const std::out_of_range &e ) { }
 
-		try
+		if( l.hasY() )
 		{
 			double y{ l.y() };
 			if( mirror )
 				y *= -1.0f;
 			line << 'Y' << (y *= scale) << ' ';
 		}
-		catch( const std::out_of_range &e ) { }
 
-		try
+		if( l.hasZ() )
 		{
 			double z = l.z();
 
@@ -118,7 +113,6 @@ const std::vector<std::string> HershChar::toHeidenhain( const double scale, cons
 
 			line << 'Z' << z << ' ';
 		}
-		catch( const std::out_of_range &e ) { }
 
 		line << std::noshowpos << "R F" << f;
 
@@ -189,14 +183,11 @@ const HershChar HershChar::yzGroove( HershChar const &from, const double z_offs,
 		throw std::invalid_argument( "HershChar::yzGroove: Negative radius increment.\nCheck parameters: groove_radius, work_radius and n_cuts." );
 
 	double currY = split.firstY();
+	Point prevP;
 	for( int i = 1; i <= n_cuts; i++ )
 	{
-		Point prevP;
 		for( auto p : split.p_ )
 		{
-			if( (prevP) && p == prevP )
-				continue;
-
 			if( p.hasY() )
 				currY = p.y();
 
@@ -205,11 +196,15 @@ const HershChar HershChar::yzGroove( HershChar const &from, const double z_offs,
 				double currR = groove_radius + (incR * i);
 				Point nP = p;
 				nP.setZ( z_offs - (currR - ( 1 - (cos( asin( currY / currR ) )))) );
-				ret.p_.push_back( nP );
+				if( prevP != nP )
+					ret.p_.push_back( nP );
+				prevP = nP;
 			}
 			else
 			{
-				ret.p_.push_back( p );
+				if( prevP != p )
+					ret.p_.push_back( p );
+				prevP = p;
 			}
 		}
 	}
