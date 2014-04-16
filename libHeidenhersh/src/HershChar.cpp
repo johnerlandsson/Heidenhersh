@@ -79,6 +79,9 @@ const std::vector<std::string> HershChar::toHeidenhain(	const double scale, cons
 
 const std::vector<std::string> HershChar::toHeidenhain( const double scale, const bool mirror, const int feed, const int rapid ) const
 {
+	if( p_.size() == 0 )
+		return std::vector<std::string>();
+
 	std::vector<std::string> ret;
 
 	for( auto l : p_ )
@@ -137,6 +140,13 @@ const HershChar HershChar::multipleCuts( HershChar const &from, const int n_cuts
 		throw std::invalid_argument( "HershChar::multipleCuts: increment is less than zero." );
 
 	HershChar ret{ from.c(), {} };
+	ret.max_z_pos = from.max_z_pos;
+	ret.min_z_pos = from.min_z_pos;
+	ret.width_ = from.width_;
+
+	if( from.p_.size() == 0 )
+		return ret;
+
 	Point prev, current;
 	for( int i = n_cuts; i > 0; i-- )
 	{
@@ -170,6 +180,9 @@ const HershChar HershChar::yzGroove( HershChar const &from, const double z_offs,
 	ret.max_z_pos = split.max_z_pos;
 	ret.min_z_pos = split.min_z_pos;
 	ret.width_ = split.width_;
+
+	if( from.p_.size() == 0 )
+		return ret;
 
 	double incR = (work_radius - groove_radius) / n_cuts;
 	if( incR <= 0.0f )
@@ -218,6 +231,9 @@ const HershChar HershChar::splitYSegments( HershChar const &from, const double m
 	ret.max_z_pos = from.max_z_pos;
 	ret.min_z_pos = from.min_z_pos;
 	ret.width_ = from.width_;
+
+	if( from.p_.size() == 0 )
+		return ret;
 
 	try
 	{

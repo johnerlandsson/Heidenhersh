@@ -52,6 +52,32 @@ class CharacterMap
 		const inline HershChar make_Y();
 		const inline HershChar make_Z();
 
+		const inline HershChar make_a();
+		const inline HershChar make_b();
+		const inline HershChar make_c();
+		const inline HershChar make_d();
+		const inline HershChar make_e();
+		const inline HershChar make_f();
+		const inline HershChar make_g();
+		const inline HershChar make_h();
+		const inline HershChar make_i();
+		const inline HershChar make_j();
+		const inline HershChar make_k();
+		const inline HershChar make_l();
+		const inline HershChar make_m();
+		const inline HershChar make_n();
+		const inline HershChar make_o();
+		const inline HershChar make_p();
+		const inline HershChar make_q();
+		const inline HershChar make_r();
+		const inline HershChar make_s();
+		const inline HershChar make_t();
+		const inline HershChar make_u();
+		const inline HershChar make_v();
+		const inline HershChar make_x();
+		const inline HershChar make_y();
+		const inline HershChar make_z();
+
 		const inline HershChar make_0();
 		const inline HershChar make_1();
 		const inline HershChar make_2();

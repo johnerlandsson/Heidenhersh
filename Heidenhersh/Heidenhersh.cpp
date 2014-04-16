@@ -21,7 +21,7 @@ std::vector<HershChar> chars;
 int main()
 try
 {
-	string line{ "ABCDEFGHIJKLMNOPQRSTUVXYZ" };
+	string line{ "ABCDEFGHIJKLMNOPQRSTUVXYZmx0123456789-./ " };
 
 	CharacterMap m{ 0.2, -0.3 };
 
