@@ -96,14 +96,14 @@ vector<double> grooved_wheel( const std::string &line, const CharacterMap &map, 
 int main()
 try
 {
-	string line{ "amokabel H00S-D 50 - " };
-//	string line{ "IEC 61138/60165" };
+	string line{ "amokabel H00S-D 50 -IEC 61138/" };
+//	string line{ "60165" };
 //	string line{ "EXQ 4G1" };
 	CharacterMap m{ 0.2, -0.3 };
 
 //	vector<double> angles = wheel( line, m, 60.0f, 3.2f, true, 30, 1000, 1.0f, 2, 0.0f );
 	cout << ";Program. String: " << line << endl;
-	vector<double> angles = grooved_wheel( line, m, 60, 3.2, true, 30, 6000, 0.5f, 2, 0.0f, 4.93f, 0.25f, 6.35, 6.65 );
+	vector<double> angles = grooved_wheel( line, m, 60, 3.2, true, 30, 6000, 1.2f, 2, 0.0f, 4.93f, 0.25f, 6.35, 6.65 );
 
 	cout << endl << ";Angles." << endl;
 	for( auto a : angles )

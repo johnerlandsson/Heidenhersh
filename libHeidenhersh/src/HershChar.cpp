@@ -93,16 +93,11 @@ const std::vector<std::string> HershChar::toHeidenhain( const double scale, cons
 			double x{ l.x() };
 			if( mirror )
 				x *= -1.0f;
-			line << 'X' << (x *= scale) << ' ';
+			line << 'X' << x * scale << ' ';
 		}
 
 		if( l.hasY() )
-		{
-			double y{ l.y() };
-			if( mirror )
-				y *= -1.0f;
-			line << 'Y' << (y *= scale) << ' ';
-		}
+			line << 'Y' << l.y() * scale << ' ';
 
 		if( l.hasZ() )
 		{
