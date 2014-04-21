@@ -1,6 +1,6 @@
 TARGET		= libHeidenhersh.so
 CC			= g++
-CFLAGS		= -Wall -g -fPIC -std=c++11
+CFLAGS		= -Wall -g -fPIC -std=c++11 -Wignored-qualifiers
 LDFLAGS		= -shared -Wl,-soname=$(TARGET)
 
 CPP_FILES	= $(wildcard src/*.cpp)

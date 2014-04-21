@@ -58,17 +58,17 @@ HershChar::HershChar( const char c, const std::initializer_list<Point> p ) : p_{
 }
 
 
-const char HershChar::c() const
+char HershChar::c() const
 {
 	return c_;
 }
 
-const bool HershChar::isZTop( double pos ) const
+bool HershChar::isZTop( double pos ) const
 {
 	return pos == max_z_pos;
 }
 
-const double HershChar::width() const
+double HershChar::width() const
 {
 	return width_;
 }
@@ -290,7 +290,7 @@ const HershChar HershChar::splitYSegments( HershChar const &from, const double m
 	return ret;
 }
 
-const double HershChar::firstY() const
+double HershChar::firstY() const
 {
 	double ret;
 	bool hasValue = false;
@@ -309,7 +309,7 @@ const double HershChar::firstY() const
 	return ret;
 }
 
-const double HershChar::segmentLength( const Point a, const Point b )
+double HershChar::segmentLength( const Point a, const Point b )
 {
 	Point::xy_points_t xy = Point::normalizeXY( a, b );
 

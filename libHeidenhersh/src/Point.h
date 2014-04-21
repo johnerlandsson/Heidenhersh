@@ -23,9 +23,9 @@ class Point
 		Point( const Point &other );
 		Point( const double x, const double y, const double z );
 		Point( const double z );
-		const double x() const;
-		const double y() const;
-		const double z() const;
+		double x() const;
+		double y() const;
+		double z() const;
 		void setX( const double x );
 		void setY( const double y );
 		void setZ( const double z );
@@ -36,9 +36,9 @@ class Point
 		operator bool() const;
 		const xy_points_t normalizeXY( const Point &other );
 		static const xy_points_t normalizeXY( const Point &a, const Point &b );
-		const bool hasX() const;
-		const bool hasY() const;
-		const bool hasZ() const;
+		bool hasX() const;
+		bool hasY() const;
+		bool hasZ() const;
 
 	private:
 		std::unique_ptr<double> x_;

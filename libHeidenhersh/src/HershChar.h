@@ -23,9 +23,9 @@ class HershChar
 		struct NoY {};
 		HershChar();
 		HershChar( const char c, const std::initializer_list<Point> p );
-		const char c() const;
-		const bool isZTop( double pos ) const;
-		const double width() const;
+		char c() const;
+		bool isZTop( double pos ) const;
+		double width() const;
 		const std::vector<std::string> toHeidenhain( const double scale, const bool mirror, const int feed,
 													 const int rapid ) const;
 		static const HershChar multipleCuts( HershChar const &from, const int n_cuts, const double workp_z_pos );
@@ -39,8 +39,8 @@ class HershChar
 	private:
 		friend class CharacterMap;
 		static const HershChar splitYSegments( HershChar const &from, const double max_y_len );
-		const double firstY() const;
-		static const double segmentLength( const Point a, const Point b );
+		double firstY() const;
+		static double segmentLength( const Point a, const Point b );
 		std::vector<Point> p_;
 		char c_;
 		double max_z_pos;

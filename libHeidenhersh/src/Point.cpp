@@ -36,7 +36,7 @@ Point::Point( const double z ) : x_{ nullptr }, y_{ nullptr }, z_{ new double{ z
 {
 }
 
-const double Point::x() const
+double Point::x() const
 {
 	if( x_ == nullptr )
 		throw std::out_of_range( "Point::x. nullptr from getter." );
@@ -44,7 +44,7 @@ const double Point::x() const
 	return *x_;
 }
 
-const double Point::y() const
+double Point::y() const
 {
 	if( y_ == nullptr )
 		throw std::out_of_range( "Point::y. nullptr from getter." );
@@ -52,7 +52,7 @@ const double Point::y() const
 	return *y_;
 }
 
-const double Point::z() const
+double Point::z() const
 {
 	if( z_ == nullptr )
 		throw std::out_of_range( "Point::z. nullptr from getter." );
@@ -187,17 +187,17 @@ const Point::xy_points_t Point::normalizeXY( const Point &a, const Point &b )
 	return ret;
 }
 
-const bool Point::hasX() const
+bool Point::hasX() const
 {
 	return x_ != nullptr;
 }
 
-const bool Point::hasY() const
+bool Point::hasY() const
 {
 	return y_ != nullptr;
 }
 
-const bool Point::hasZ() const
+bool Point::hasZ() const
 {
 	return z_ != nullptr;
 }
