@@ -16,6 +16,9 @@ Point::Point()
 {
 }
 
+/* copy constructor
+ * Copy cords by value
+ */
 Point::Point( const Point &other )
 {
 	if( other.x_ )

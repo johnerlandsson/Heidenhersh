@@ -160,9 +160,8 @@ const HershChar HershChar::multipleCuts( HershChar const &from, const int n_cuts
 	return ret;
 }
 
-const HershChar HershChar::yzGroove( HershChar const &from, const double z_offs, const double workp_z_pos,
-									 const double groove_radius, const double work_radius, const int n_cuts,
-									 const double z_res )
+const HershChar HershChar::yzGroove( HershChar const &from, const double z_offs, const double groove_radius,
+									 const double work_radius, const int n_cuts, const double z_res )
 {
 	HershChar split{ splitYSegments( from, z_res ) };
 	HershChar ret{ split.c_, {} };
@@ -190,7 +189,11 @@ const HershChar HershChar::yzGroove( HershChar const &from, const double z_offs,
 			{
 				double currR = groove_radius + (incR * i);
 				Point nP = p;
-				nP.setZ( ((currR * cos( atan( currY / currR ) )) - z_offs ) * -1.0f );
+
+				//Calculate the projected Z value
+				double corr_z = ((currR * cos( asin( currY / currR ) )) - z_offs ) * -1.0f;
+				nP.setZ( corr_z );
+
 				if( prevP != nP )
 					ret.p_.push_back( nP );
 				prevP = nP;
@@ -207,11 +210,26 @@ const HershChar HershChar::yzGroove( HershChar const &from, const double z_offs,
 	return ret;
 }
 
+void HershChar::scale( double s )
+{
+	for( auto &p : p_ )
+	{
+		if( p.hasX() )
+			p.setX( p.x() * s );
+
+		if( p.hasY() )
+			p.setY( p.y() * s );
+	}
+}
+
 void HershChar::addPoint( const Point p )
 {
 	p_.push_back( p );
 }
 
+/* splitYSegments
+ * Split any segment where the point y distance exceeds max_y_len into smaller segments
+ */
 const HershChar HershChar::splitYSegments( HershChar const &from, const double max_y_len )
 {
 	if( max_y_len < 0.1f )
