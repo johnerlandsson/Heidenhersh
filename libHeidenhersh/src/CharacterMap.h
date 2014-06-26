@@ -18,7 +18,7 @@ class CharacterMap
 {
 	public:
 		CharacterMap( const double z_safe, const double z_work );
-		const HershChar character( char c ) const;
+		const HershChar character( wchar_t c ) const;
 
 	private:
 		std::vector<HershChar> data;
@@ -51,6 +51,7 @@ class CharacterMap
 		const inline HershChar make_X();
 		const inline HershChar make_Y();
 		const inline HershChar make_Z();
+		const inline HershChar make_AO();
 
 		const inline HershChar make_a();
 		const inline HershChar make_b();

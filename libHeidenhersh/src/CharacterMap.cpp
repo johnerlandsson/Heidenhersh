@@ -6,11 +6,13 @@
  */
 
 #include "CharacterMap.h"
+#include <locale>
 
 namespace heidenhersh
 {
 CharacterMap::CharacterMap( const double z_safe, const double z_work ) : zs{ z_safe }, zw{ z_work }
 {
+
 	data.push_back( make_A() );
 	data.push_back( make_B() );
 	data.push_back( make_C() );
@@ -36,6 +38,7 @@ CharacterMap::CharacterMap( const double z_safe, const double z_work ) : zs{ z_s
 	data.push_back( make_X() );
 	data.push_back( make_Y() );
 	data.push_back( make_Z() );
+	data.push_back( make_AO() );
 
 	data.push_back( make_a() );
 	data.push_back( make_b() );
@@ -63,10 +66,11 @@ CharacterMap::CharacterMap( const double z_safe, const double z_work ) : zs{ z_s
 	data.push_back( make_space() );
 }
 
-const HershChar CharacterMap::character( char c ) const
+const HershChar CharacterMap::character( wchar_t c ) const
 {
+//	std::locale::global( std::locale{ "swedish" } );
 	for( auto i : data )
-		if( i.c() == c )
+		if( std::wstring{ i.c() } == std::wstring{ c } )
 			return i;
 
 	std::string msg{ "CharacterMap::character: No such character \'" };
@@ -230,6 +234,12 @@ inline const HershChar CharacterMap::make_Z()
 {
 	std::initializer_list<Point> pl{ { zs }, { -0.318091 , 0.477271, zs }, { zw }, { 0.318091 , 0.477271, zw }, { -0.318091, -0.477271, zw }, { 0.318091, -0.477271, zw }, { zs } };
 	return HershChar{ 'Z', pl };
+}
+
+inline const HershChar CharacterMap::make_AO()
+{
+	std::initializer_list<Point> pl{ { zs }, { -0.018189, 0.665508, zs }, { zw }, { -0.042442, 0.654219, zw }, { -0.066694, 0.631924, zw }, { -0.078820, 0.598114, zw }, { -0.078820, 0.575254, zw }, { -0.066694, 0.541443, zw }, { -0.042442, 0.518866, zw }, { -0.018189, 0.507577, zw }, { 0.018190, 0.507577, zw }, { 0.042442, 0.518866, zw }, { 0.066694, 0.541443, zw }, { 0.078820, 0.575254, zw }, { 0.078820, 0.598114, zw }, { 0.066694, 0.631924, zw }, { 0.042442, 0.654219, zw }, { 0.018190, 0.665508, zw }, { -0.018189, 0.665508, zw }, { zs }, { -0.000644, 0.477266, zs }, { zw }, { -0.364273, -0.477266, zw }, { zs }, { -0.000644, 0.477266, zs }, { zw }, { 0.362986, -0.477266, zw }, { zs }, { -0.227912, -0.159089, zs }, { zw }, { 0.226625, -0.159089, zw }, { zs } };
+	return HershChar{ L'\xc5', pl };
 }
 
 inline const HershChar CharacterMap::make_a()

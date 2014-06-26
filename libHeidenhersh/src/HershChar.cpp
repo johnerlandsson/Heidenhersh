@@ -22,7 +22,7 @@ HershChar::HershChar() : c_{ '\0' }, max_z_pos{ 0.0f }, min_z_pos{ 0.0f }, width
 {
 }
 
-HershChar::HershChar( const char c, const std::initializer_list<Point> p ) : p_{ p }, c_{ c }
+HershChar::HershChar( const wchar_t c, const std::initializer_list<Point> p ) : p_{ p }, c_{ c }
 {
 	max_z_pos = std::numeric_limits<double>::min();
 	min_z_pos = std::numeric_limits<double>::max();
@@ -58,7 +58,7 @@ HershChar::HershChar( const char c, const std::initializer_list<Point> p ) : p_{
 }
 
 
-char HershChar::c() const
+wchar_t HershChar::c() const
 {
 	return c_;
 }

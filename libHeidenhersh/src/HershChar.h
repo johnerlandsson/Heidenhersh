@@ -22,8 +22,8 @@ class HershChar
 	public:
 		struct NoY {};
 		HershChar();
-		HershChar( const char c, const std::initializer_list<Point> p );
-		char c() const;
+		HershChar( const wchar_t c, const std::initializer_list<Point> p );
+		wchar_t c() const;
 		bool isZTop( double pos ) const;
 		double width() const;
 		const std::vector<std::string> toHeidenhain( const double scale, const bool mirror, const int feed,
@@ -42,7 +42,7 @@ class HershChar
 		double firstY() const;
 		static double segmentLength( const Point a, const Point b );
 		std::vector<Point> p_;
-		char c_;
+		wchar_t c_;
 		double max_z_pos;
 		double min_z_pos;
 		double width_;

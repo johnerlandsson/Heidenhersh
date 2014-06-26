@@ -9,6 +9,7 @@
 #include <iostream>
 #include "CharacterMap.h"
 #include <cmath>
+#include <locale>
 
 using namespace std;
 using namespace heidenhersh;
@@ -60,7 +61,7 @@ vector<double> wheel( const std::string &line, const CharacterMap &map, const do
 	return ret;
 }
 
-vector<double> grooved_wheel( const std::string &line, const CharacterMap &map, const double dia, const double scale,
+vector<double> grooved_wheel( const wstring &line, const CharacterMap &map, const double dia, const double scale,
 					  	  	  const bool mirror, const int feed, const int rapid, const double spacing, const int n_cuts,
 					  	  	  const double zoffs, const double seg_len, const double gradius,
 					  	  	  const double wradius )
@@ -110,43 +111,29 @@ vector<double> grooved_wheel( const std::string &line, const CharacterMap &map, 
 int main()
 try
 {
-//	string line{ "amokabel - H00S-D 25 - IEC 61138/60165" };
-//	string line{ "AMO H07V2-K S" };
-	string line{ "I" };
+	locale::global( locale{ "swedish" } );
+
+	wstring line{ L"amo-H00S-D 150mm2-IEC 61138/60165-RAGNAR STÅLSKOG AB" };
 
 	CharacterMap m{ 0.2, -0.3 };
 
 //	vector<double> angles = wheel( line, m, 60.0f, 3.2f, true, 30, 1000, 1.0f, 2, 0.0f );
-	cout << ";Program. String: " << line << endl;
+//	cout << ";Program. String: " << line << endl;
 //	vector<double> angles = wheel( line, m, 60.0f, 2.8f, true, 30, 2000, 1.3f, 2, 0.0f );
 
 	vector<double> angles = grooved_wheel( line,	//Input test
 										   m, 		//Character map
-										   60, 		//Wheel dia
-										   3.0f, 	//Scale
+										   80, 		//Wheel dia
+										   4.0, 	//Scale
 										   true,	//Mirror
 										   30, 		//Feed
 										   6000, 	//Rapid feed
-										   1.7f, 	//Spacing
-										   1,		//Number of cuts
-										   1.5f,	//YZ center offset
+										   2.0f, 	//Spacing
+										   3,		//Number of cuts
+										   11.27f,	//YZ center offset
 										   0.25f,	//Max segment length
-										   4.7f,	//Groove radius
-										   5.0f );	//Groove work radius
-
-//	vector<double> angles = grooved_wheel( line,	//Input test
-//										   m, 		//Character map
-//										   60, 		//Wheel dia
-//										   3.2, 	//Scale
-//										   true,	//Mirror
-//										   30, 		//Feed
-//										   6000, 	//Rapid feed
-//										   1.7f, 	//Spacing
-//										   3,		//Number of cuts
-//										   1.5f,	//YZ center offset
-//										   0.25f,	//Max segment length
-//										   4.7f,	//Groove radius
-//										   5.0f );	//Groove work radius
+										   11.8f,	//Groove radius
+										   12.1f );	//Groove work radius
 
 	cout << endl << ";Angles." << endl;
 	for( auto a : angles )
