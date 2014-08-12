@@ -25,7 +25,7 @@ constexpr double dist2angle( const double dia, const double dist )
 	return dist / ((dia * M_PI) / 360);
 }
 
-vector<double> wheel( const std::string &line, const CharacterMap &map, const double dia, const double scale,
+vector<double> wheel( const std::wstring &line, const CharacterMap &map, const double dia, const double scale,
 					  const bool mirror, const int feed, const int rapid, const double spacing, const int n_cuts,
 					  const int workp_z_pos )
 {
@@ -113,27 +113,28 @@ try
 {
 	locale::global( locale{ "swedish" } );
 
-	wstring line{ L"amo-H00S-D 150mm2-IEC 61138/60165-RAGNAR STÅLSKOG AB" };
+	wstring line{ L"H07Z1-U TYPE 1 4mm2 AMO I CE" };
 
 	CharacterMap m{ 0.2, -0.3 };
 
 //	vector<double> angles = wheel( line, m, 60.0f, 3.2f, true, 30, 1000, 1.0f, 2, 0.0f );
-//	cout << ";Program. String: " << line << endl;
-//	vector<double> angles = wheel( line, m, 60.0f, 2.8f, true, 30, 2000, 1.3f, 2, 0.0f );
+	vector<double> angles = wheel( line, m, 60.0f, 2.2f, true, 30, 1000, 1.0f, 2, 0.0f );
+//	vector<double> angles = wheel( line, m, 60.0f, 2.0f, true, 30, 1000, 1.0f, 2, 0.0f );
 
-	vector<double> angles = grooved_wheel( line,	//Input test
-										   m, 		//Character map
-										   80, 		//Wheel dia
-										   4.0, 	//Scale
-										   true,	//Mirror
-										   30, 		//Feed
-										   6000, 	//Rapid feed
-										   2.0f, 	//Spacing
-										   3,		//Number of cuts
-										   11.27f,	//YZ center offset
-										   0.25f,	//Max segment length
-										   11.8f,	//Groove radius
-										   12.1f );	//Groove work radius
+
+//	vector<double> angles = grooved_wheel( line,	//Input test
+//										   m, 		//Character map
+//										   80, 		//Wheel dia
+//										   4.0, 	//Scale
+//										   true,	//Mirror
+//										   30, 		//Feed
+//										   6000, 	//Rapid feed
+//										   2.0f, 	//Spacing
+//										   3,		//Number of cuts
+//										   11.27f,	//YZ center offset
+//										   0.25f,	//Max segment length
+//										   11.8f,	//Groove radius
+//										   12.1f );	//Groove work radius
 
 	cout << endl << ";Angles." << endl;
 	for( auto a : angles )

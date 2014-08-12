@@ -148,7 +148,7 @@ inline const HershChar CharacterMap::make_K()
 
 inline const HershChar CharacterMap::make_L()
 {
-	std::initializer_list<Point> pl{ { zs }, { -0.2683, 0.4773, zs }, { zw }, { -0.2683, -0.4773, zw }, { zs }, { -0.2683, -0.4773, zs }, { zw }, { 0.2772, -0.4773, zw }, { zs } };
+	std::initializer_list<Point> pl{ { zs }, { -0.2683, 0.4773, zs }, { zw }, { -0.2683, -0.4773, zw }, { 0.2772, -0.4773, zw }, { zs } };
 	return HershChar{ 'L', pl };
 }
 
